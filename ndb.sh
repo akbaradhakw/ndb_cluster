@@ -34,30 +34,39 @@ spinner() {
 installndbdata(){
     echo -e "${BLUE}INFO:${RESET} Menginstall ndb data node echo Menginstall ndb data node "
     {
-    wget https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-common_8.4.3-1debian12_amd64.deb
-    wget wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client-plugins_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-client-plugins_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client-core_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-client-core_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-client_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-client_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-client_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server-core_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-server-core_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-server_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server-debug_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-server-debug_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-server_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-server_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-data-node_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-data-node_8.4.3-1debian12_amd64.deb
 
-    mkdir -p /var/lib/mysql/
-    chown -R mysql:mysql /var/lib/mysql/
+wget https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client-plugins_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client-core_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-client_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-client_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server-core_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-server-debug_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-server_8.4.3-1debian12_amd64.deb
+wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-data-node_8.4.3-1debian12_amd64.deb
 
+apt install ./mysql-common_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-client-plugins_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-client-core_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-client_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-client_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-server-core_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-server_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-server-debug_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-server_8.4.3-1debian12_amd64.deb -y
+apt install ./mysql-cluster-community-data-node_8.4.3-1debian12_amd64.deb -y
+
+mkdir -p /var/lib/mysql/
+chown -R mysql:mysql /var/lib/mysql/
+cat > /etc/mysql/my.cnf <<EOF
+[mysqld]
+ndbcluster
+ndb-connectstring=X.X.X.X
+
+[mysql_cluster]
+ndb-connectstring=X.X.X.X
+EOF
 cat > /etc/systemd/system/ndbd.service <<EOF
 [Unit]
 Description=MySQL NDB Data Node Daemon
@@ -77,7 +86,7 @@ systemctl daemon-reload
 systemctl enable ndbd
     } &
     spinner $!
-    echo -e "${GREEN}Sukses:${RESET} Instalasi berhasil."
+    echo -e "${GREEN}Sukses:${RESET} Instalasi berhasil. edit /etc/mysql/my.cnf untuk konfigurasi lebih lanjut"
 
 }
 
@@ -85,10 +94,10 @@ installndbmgm(){
     echo -e "${BLUE}INFO:${RESET} Menginstall ndb management node echo Menginstall ndb data node "
     {
     wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
+    apt install ./mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb -y
 
     mkdir -p /usr/mysql-cluster
-    
+
 cat > /etc/systemd/system/ndb_mgmd.service <<EOF
 [Unit]
 Description=MySQL NDB Cluster Management Server
@@ -108,30 +117,30 @@ EOF
 cat > /usr/mysql-cluster/config.ini <<EOF   
 [ndbd default]
 # Options affecting ndbd processes on all data nodes:
-NoOfReplicas=2  # Number of replicas
+NoOfReplicas=X # Number of replicas
 
 [ndb_mgmd]
 # Management process options:
-hostname=192.168.221.132  # Hostname of the Management NOde
+hostname=X.X.X.X  # Hostname of the Management NOde
 datadir=/usr/mysql-cluster  # Directory for the log files
 
 [ndbd]
-hostname=192.168.221.133  # Hostname/IP of the first data node
+hostname=X.X.X.X  # Hostname/IP of the first data node
 NodeId=2  # Node ID for this data node
 datadir=/var/lib/mysql/  # Remote directory for the data files
 
 [ndbd]
-hostname=192.168.221.134  # Hostname/IP of the second data node
+hostname=X.X.X.X  # Hostname/IP of the second data node
 NodeId=3  # Node ID for this data node
 datadir=/var/lib/mysql/  # Remote directory for the data files
 
 [mysqld]
 NodeId=4
-hostname=192.168.221.133 #SQL Node 1
+hostname=X.X.X.X #SQL Node 1
 
 [mysqld]
 NodeId=5
-hostname=192.168.221.134 #SQL Node 2
+hostname=X.X.X.X #SQL Node 2
 EOF
 } &
     spinner $!
