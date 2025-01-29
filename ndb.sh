@@ -86,12 +86,6 @@ installndbmgm(){
     {
     wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
     apt install ./mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-client_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-management-client_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-server-debug_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-management-server-debug_8.4.3-1debian12_amd64.deb
-    wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-client-plugins_8.4.3-1debian12_amd64.deb
-    apt install ./mysql-cluster-community-management-client-plugins_8.4.3-1debian12_amd64.deb
 
     mkdir -p /var/lib/mysql-cluster/
     chown -R mysql:mysql /var/lib/mysql-cluster/
