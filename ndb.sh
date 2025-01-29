@@ -87,9 +87,8 @@ installndbmgm(){
     wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-8.4/mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
     apt install ./mysql-cluster-community-management-server_8.4.3-1debian12_amd64.deb
 
-    mkdir -p /var/lib/mysql-cluster/
-    chown -R mysql:mysql /var/lib/mysql-cluster/
-
+    mkdir -p /usr/mysql-cluster
+    
 cat > /etc/systemd/system/ndb_mgmd.service <<EOF
 [Unit]
 Description=MySQL NDB Cluster Management Server
